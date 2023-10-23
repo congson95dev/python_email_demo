@@ -3,6 +3,10 @@ https://www.tutorialspoint.com/python/python_sending_email.htm
 """
 
 import smtplib
+import redis
+from rq import Queue, Connection
+
+from send_mail import send_mail
 
 """
 send email to local server
@@ -36,6 +40,19 @@ send email to actual gmail
 # content = header + content
 # mail.sendmail(sender, recipient, content)
 # mail.close()
+
+
+"""
+send email to actual gmail with queue (redis)
+"""
+# url for local redis
+redis_url = "redis://localhost:6379"
+# url for docker redis
+# redis_url = "redis://redis:6379/0"
+redis_connection = redis.from_url(redis_url)
+with Connection(redis_connection):
+    q = Queue()
+    q.enqueue(send_mail)  # have to call to function in another file, or error
 
 
 """
@@ -108,3 +125,5 @@ https://www.learnaws.org/2020/12/18/aws-ses-boto3-guide/
 #     },
 #     Source="lifescience-dev@mlvn-macromil.com",
 # )
+
+print("done")

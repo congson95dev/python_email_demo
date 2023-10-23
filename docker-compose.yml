@@ -1,0 +1,34 @@
+version: '3.8'
+
+networks:
+  my-network:
+    driver: bridge
+
+services:
+  main:
+    build:
+      dockerfile: Dockerfile
+    command: python main.py
+    volumes:
+      - .:/usr/src/app
+    networks:
+      - my-network
+    depends_on:
+      - redis
+      - worker
+
+  worker:
+      build:
+        dockerfile: Dockerfile
+      command: python worker.py
+      volumes:
+        - .:/usr/src/app
+      networks:
+        - my-network
+      depends_on:
+        - redis
+
+  redis:
+    image: redis:6-alpine
+    networks:
+      - my-network
