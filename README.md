@@ -43,6 +43,6 @@ https://github.com/testdrivenio/flask-ses-rq/blob/master/docker-compose.yml#L37
 
 for docker run, replace `redis_url` with `redis_url` of docker, then run:
 
-`docker compose up -d`
+`docker compose up --build -d`
 
 after that, it will send email to you.

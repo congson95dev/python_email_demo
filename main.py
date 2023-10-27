@@ -45,6 +45,8 @@ send email to actual gmail
 """
 send email to actual gmail with queue (redis)
 """
+sender = 'fudothedev@gmail.com'
+message = "Hello World"
 # url for local redis
 redis_url = "redis://localhost:6379"
 # url for docker redis
@@ -52,8 +54,8 @@ redis_url = "redis://localhost:6379"
 redis_connection = redis.from_url(redis_url)
 with Connection(redis_connection):
     q = Queue()
-    q.enqueue(send_mail)  # have to call to function in another file, or error
-
+    q.enqueue(send_mail, sender,
+              message)  # have to call to function in another file, or error
 
 """
 SES by smtplib, this will require smtp credential to work
@@ -92,7 +94,6 @@ https://www.aabidsofi.com/posts/sending-emails-with-aws-ses-and-python/
 #
 # send_email_with_ses("your-email@example.com", "your-email+1@example.com",
 #                     "hello world")
-
 
 
 """
